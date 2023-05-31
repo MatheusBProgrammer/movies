@@ -13,6 +13,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+  //Carregamento da função de requisição de filmes
   late Future<void> moviesFuture;
 
   List trendingmovies = [];
@@ -53,12 +56,6 @@ class _HomePageState extends State<HomePage> {
       topratedmovies = topratedresult['results'];
       tvshows = tvshowsresult['results'];
     });
-    print(tvshows);
-    print(tvshows[1]);
-    print(tvshows[2]);
-    print(tvshows[3]);
-    print(tvshows[4]);
-    print(tvshows[5]);
   }
 
   @override
