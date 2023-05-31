@@ -24,28 +24,48 @@ class Description extends StatelessWidget {
             Container(
               height: 250,
               child: Stack(
+                fit: StackFit.expand,
                 children: [
                   Positioned.fill(
                     child: Container(
-                      height: 250,
+                      height: double.infinity,
                       child: Image.network(
                         bannerurl,
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
                   Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        child: modified_text(
-                          text: 'Avarage Rating - ' + vote + ' ⭐ ',
-                          color: Colors.white,
-                          size: 22,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment(0, 0.8),
+                          end: Alignment(0, 0),
+                          colors: [
+                            Color.fromRGBO(0, 0, 0, 0.9),
+                            Color.fromRGBO(0, 0, 0, 0),
+                          ],
                         ),
-                      ))
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: modified_text(
+                        text: 'Avarage Rating - ' + vote + ' ⭐ ',
+                        color: Colors.white,
+                        size: 22,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

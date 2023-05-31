@@ -12,9 +12,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-
-
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   //Carregamento da função de requisição de filmes
   late Future<void> moviesFuture;
 
@@ -31,12 +30,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   //Chave da Api
-  final String apikey = 'e717b9329987552e93b366bbec144548';
+  final String apikey = '';
 
   //Token da API
-  final readaccesstoken =
-      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNzE3YjkzMjk5ODc1NTJlOTNiMzY2YmJlYzE0NDU0OCIsInN1YiI6IjY0NzI5ZTg0YTE5OWE2MDBiZjI5YWZmZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zvRA8xmS1FhW62VqCMN6_ZesSM-9HPHYhoUsAB5UgQw';
-
+  final readaccesstoken = '';
   Future<void> loadmovies() async {
     TMDB tmdbWithCustomLogs = TMDB(
         ApiKeys(
@@ -61,34 +58,91 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black54,
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title:
-              modified_text(text: 'Movie App', color: Colors.white, size: 30),
-          centerTitle: true,
-        ),
-        body: FutureBuilder(
-          future: moviesFuture,
-          builder: (_, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return (Center(
-                child: Text('Error'),
-              ));
-            } else {
-              //Or, you can use SingleChildScrollView + Collumn
-              return ListView(
-                //Lançamentos
-                  children: [
-                    topRatedMovies(topRatedMoviesList: topratedmovies),
-                    trendingMovies(trending: trendingmovies),
-                    tvShowsMovies(tvShowsList: tvshows)
-                  ]) ;
-            }
-          },
+      backgroundColor: Colors.black54,
+      body: FutureBuilder(
+        future: moviesFuture,
+        builder: (_, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return (Center(
+              child: Text('Error'),
+            ));
+          } else {
+            //Or, you can use SingleChildScrollView + Collumn
+            return CustomScrollView(
+              slivers: [
+                // SliverAppBar
+                SliverAppBar(
+                  backgroundColor: Colors.black54,
+                  expandedHeight: 300,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    centerTitle: true,
 
-        ));
+                    // Background Stack
+                    // O FlexibleSpaceBar possui um Stack como plano de fundo.
+                    // O Stack contém uma imagem e uma DecoratedBox para adicionar um gradiente sobre a imagem.
+                    background: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        // Imagem de fundo
+                        Image.network(
+                          'http://image.tmdb.org/t/p/w500' +
+                              topratedmovies[2]['backdrop_path'],
+                          fit: BoxFit.cover,
+                        ),
+
+                        // DecoratedBox para o gradiente
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment(0, 0.8),
+                              end: Alignment(0, 0),
+                              colors: [
+                                Color.fromRGBO(0, 0, 0, 0.6),
+                                Color.fromRGBO(0, 0, 0, 0),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    // Título centralizado
+                    title: Text(
+                      'Movies App',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+
+                // SliverList
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (_, index) {
+                      // SliverChildBuilderDelegate para os itens da lista
+                      if (index == 0) {
+                        // Widget de filmes mais bem avaliados
+                        return topRatedMovies(
+                            topRatedMoviesList: topratedmovies);
+                      } else if (index == 1) {
+                        // Widget de filmes em tendência
+                        return trendingMovies(trending: trendingmovies);
+                      } else if (index == 2) {
+                        // Widget de programas de TV
+                        return tvShowsMovies(tvShowsList: tvshows);
+                      }
+                      return SizedBox.shrink();
+                    },
+                    childCount: 3,
+                  ),
+                ),
+              ],
+            );
+          }
+        },
+      ),
+    );
   }
 }
