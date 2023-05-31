@@ -33,6 +33,7 @@ class topRatedMovies extends StatelessWidget {
                     return InkWell(
                       borderRadius: BorderRadius.circular(25),
                       onTap: () {
+                        //Modal Screen
                         showModalBottomSheet(
                           context: context,
                           builder: (_) => Description(
@@ -56,6 +57,7 @@ class topRatedMovies extends StatelessWidget {
                           ),
                         );
 
+                        //Alternativa para a Modal Screen
                         // Navigator.push(
                         //     context,
                         //     MaterialPageRoute(
@@ -90,9 +92,7 @@ class topRatedMovies extends StatelessWidget {
                             ),
                             Container(
                               child: modified_text(
-                                text: topRatedMoviesList[index]['title'] != null
-                                    ? topRatedMoviesList[index]['title']
-                                    : 'Loading',
+                                text: topRatedMoviesList[index]['title'] ?? 'Loading',
                                 color: Colors.white,
                                 size: 12,
                               ),

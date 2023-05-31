@@ -13,6 +13,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late Future<void> moviesFuture;
+
   List trendingmovies = [];
   List topratedmovies = [];
   List tvshows = [];
@@ -22,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    loadmovies();
+    moviesFuture = loadmovies();
   }
 
   //Chave da Api
@@ -32,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   final readaccesstoken =
       'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNzE3YjkzMjk5ODc1NTJlOTNiMzY2YmJlYzE0NDU0OCIsInN1YiI6IjY0NzI5ZTg0YTE5OWE2MDBiZjI5YWZmZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zvRA8xmS1FhW62VqCMN6_ZesSM-9HPHYhoUsAB5UgQw';
 
-  loadmovies() async {
+  Future<void> loadmovies() async {
     TMDB tmdbWithCustomLogs = TMDB(
         ApiKeys(
           apikey,
@@ -57,7 +59,6 @@ class _HomePageState extends State<HomePage> {
     print(tvshows[3]);
     print(tvshows[4]);
     print(tvshows[5]);
-
   }
 
   @override
@@ -70,12 +71,26 @@ class _HomePageState extends State<HomePage> {
               modified_text(text: 'Movie App', color: Colors.white, size: 30),
           centerTitle: true,
         ),
-        body: ListView(
-            //Lançamentos
-            children: [
-              topRatedMovies(topRatedMoviesList: topratedmovies),
-              trendingMovies(trending: trendingmovies),
-              tvShowsMovies(tvShowsList: tvshows)
-            ]));
+        body: FutureBuilder(
+          future: moviesFuture,
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return (Center(
+                child: Text('Error'),
+              ));
+            } else {
+              return ListView(
+                //Lançamentos
+                  children: [
+                    topRatedMovies(topRatedMoviesList: topratedmovies),
+                    trendingMovies(trending: trendingmovies),
+                    tvShowsMovies(tvShowsList: tvshows)
+                  ]) ;
+            }
+          },
+
+        ));
   }
 }
