@@ -78,6 +78,7 @@ class _HomePageState extends State<HomePage> {
                 child: Text('Error'),
               ));
             } else {
+              //Or, you can use SingleChildScrollView + Collumn
               return ListView(
                 //Lançamentos
                   children: [

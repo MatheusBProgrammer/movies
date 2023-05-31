@@ -30,7 +30,7 @@ class Description extends StatelessWidget {
                       height: 250,
                       child: Image.network(
                         bannerurl,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
@@ -39,7 +39,7 @@ class Description extends StatelessWidget {
                       left: 0,
                       right: 0,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
+                        padding: EdgeInsets.symmetric(vertical: 15),
                         child: modified_text(
                           text: 'Avarage Rating - ' + vote + ' ⭐ ',
                           color: Colors.white,
