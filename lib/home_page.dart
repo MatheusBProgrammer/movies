@@ -65,6 +65,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         backgroundColor: Colors.black54,
         appBar: AppBar(
+          backgroundColor: Colors.black,
           title:
               modified_text(text: 'Movie App', color: Colors.white, size: 30),
           centerTitle: true,
